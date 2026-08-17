@@ -22,6 +22,11 @@ predict gene expression.
 | CONCERT | https://github.com/mims-harvard/CONCERT | |
 | MintFlow | https://github.com/Lotfollahi-lab/mintflow | The perturbed cell is encoded as a new cell type. |
 
+Minimal training scripts are in [`scripts/`](../scripts/):
+[`train_celcomen.py`](../scripts/train_celcomen.py),
+[`train_concert.py`](../scripts/train_concert.py),
+[`train_mintflow.py`](../scripts/train_mintflow.py).
+
 ## Spatial QA
 
 | Method | Repo |
