@@ -8,6 +8,33 @@
 
 **TissueNarrator** is a generative framework that adapts large language models (LLMs) for spatial transcriptomics (ST). By representing tissue sections as *spatial sentences*—ranked gene lists enriched with spatial coordinates and metadata—it reformulates spatial omics analysis as a language modeling problem. The model learns spatially conditioned gene expression patterns, generates realistic cell profiles, predicts intercellular interactions, and performs in silico perturbations.
 
+## Repository layout
+
+```
+tissuenarrator/
+├── tissuenarrator/            # the Python package
+│   ├── data.py               # CellSentence / SpatialSentence parsing
+│   ├── preprocess.py         # AnnData -> spatial-sentence dataframes
+│   ├── train.py              # LoRA fine-tuning entry point
+│   ├── llm.py                # vLLM inference wrapper
+│   └── evaluator.py          # SpatialEvaluator + NN / Class-Mean predictors
+├── tutorials/
+│   ├── 01_preprocess.ipynb
+│   ├── 02_train.ipynb
+│   ├── 03_demo_inference.ipynb # 10-min quick-start inference demo
+│   ├── 04_merfish_eval.ipynb   # reproduces the MERFISH figures
+│   ├── 05_ovarian_eval.ipynb   # reproduces the ovarian (Visium-HD) figures
+│   ├── 06_pertfish_eval.ipynb  # reproduces the Perturb-FISH figures
+│   ├── 07_spatial_qa.ipynb     # reproduces the spatial-QA figures
+│   ├── tutorial_utils.py     # shared plotting / analysis helpers
+│   ├── qa_build.py           # spatial-QA data-construction logic
+│   └── data/                 # download inputs here (see data/README.md)
+├── figs/
+├── pyproject.toml
+├── requirements.txt
+└── LICENSE
+```
+
 ## Hardware
 
 TissueNarrator runs on standard compute servers capable of supporting large language model inference. The experiments were conducted on a server equipped with an NVIDIA A6000 GPU (48 GB VRAM).
@@ -63,9 +90,16 @@ TissueNarrator is Python-based and runs on all major operating systems. It has b
 
 We provide a demo using the MERFISH mouse brain dataset ([paper](https://www.nature.com/articles/s41586-023-06808-9)) to help you get started with **TissueNarrator**. Please download the model checkpoint and preprocessed data [here](https://drive.google.com/drive/folders/16hO41QLqhSmegw9kFJtyIlN2DfbVbIU8?usp=sharing).
 
-The [demo notebook](tutorials/demo.ipynb) shows how to generate cells in test sections using TissueNarrator and prints evaluation metrics for the generated cells. On the sample test dataset, it is expected to achieve an NDCG score > 0.8 and an overlap score > 0.4. It typically runs in about 10 minutes, depending on your GPU setup.
+The [demo notebook](tutorials/03_demo_inference.ipynb) shows how to generate cells in test sections using TissueNarrator and prints evaluation metrics for the generated cells. On the sample test dataset, it is expected to achieve an NDCG score > 0.8 and an overlap score > 0.4. It typically runs in about 10 minutes, depending on your GPU setup.
 
-We also provide tutorials for [data preprocessing](tutorials/01_preprocess.ipynb) and [training](tutorials/02_train.ipynb).
+We also provide tutorials covering [data preprocessing](tutorials/01_preprocess.ipynb),
+[training](tutorials/02_train.ipynb), and [demo inference](tutorials/03_demo_inference.ipynb),
+plus evaluation tutorials that reproduce the paper figures for each dataset:
+
+- [MERFISH](tutorials/04_merfish_eval.ipynb) — cell-generation metrics, cell interaction, and in-silico transplant.
+- [Ovarian (Visium-HD)](tutorials/05_ovarian_eval.ipynb) — marker AUC, malignant-niche DEG + GSEA, and the spatial map.
+- [Perturb-FISH](tutorials/06_pertfish_eval.ipynb) — spatial perturbation map and per-knockout predicted-vs-ground-truth LFC.
+- [Spatial QA](tutorials/07_spatial_qa.ipynb) — QA-task data construction and TissueNarrator QA performance.
 
 ## Training
 
